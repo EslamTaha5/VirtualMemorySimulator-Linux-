@@ -25,7 +25,11 @@ public:
     virtual void accessPage(int pid, int page) = 0;
 
     virtual int chooseVictim() = 0;
+
+    virtual void deleteProcess(int pid) = 0;
+    
     void showProcessStatus(int pid);
+
 };
 
 class FIFO final : public VMAlgorithms {
@@ -40,7 +44,10 @@ public:
 
     int chooseVictim() override;
     
+    void deleteProcess(int pid) override;
+
 };
+
 
 class LRU final : public VMAlgorithms {
     list<PageEntry *> lruList; // To keep track of the order of page usage
@@ -53,6 +60,8 @@ public:
 
     int chooseVictim() override;
 
+    void deleteProcess(int pid) override;
+
 
 };
 
@@ -64,6 +73,8 @@ public:
     void accessPage(int pid, int page) override;
     int chooseVictim() override;
 
+    void deleteProcess(int pid) override;
+
 };
 
 class LFU final : public VMAlgorithms {
@@ -73,6 +84,7 @@ public:
     void accessPage(int pid, int page) override;
     int chooseVictim() override;
 
+    void deleteProcess(int pid) override;
 
 };
 
@@ -85,6 +97,7 @@ public:
     void accessPage(int pid, int page) override;
     int chooseVictim() override;
 
+    void deleteProcess(int pid) override;
 
 };
 

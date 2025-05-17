@@ -69,9 +69,13 @@ int main() {
                 } else if (operation == "R/W") {
                     is >> pid >> page;
                     algo->accessPage(pid, page);
-                }else {
+                }else if(operation == "S"){
                     is >> pid;
                     algo->showProcessStatus(pid);
+                }else{
+
+                    is >> pid;
+                    algo->deleteProcess(pid);
                 }
             }
             // Clear shared memory only after processing the message

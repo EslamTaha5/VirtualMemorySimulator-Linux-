@@ -4,6 +4,26 @@
 
 #include "VMAlgorithms.h"
 
+void VMAlgorithms::showProcessStatus(int pid) {
+    if (processes.find(pid) == processes.end()) {
+        printf("Process %d does not exist.\n", pid);
+        return;
+    }
+    printf("\n============== Status Of Process(%d) ==============\n", pid);
+
+
+    for (auto &page : processes[pid]) {
+        printf("Page %d: ", page->idx + 1);
+        if (page->valid) {
+            printf("In Memory, Frame = %d\n", page->frame);
+        } else {
+            printf("Not In Memory\n");
+        }
+    }
+
+    printf("===================================================\n");
+}
+
 // FIFO Algorithm
 FIFO::FIFO() : VMAlgorithms() {
 }
@@ -60,24 +80,30 @@ int FIFO::chooseVictim() {
     printf("Page number %d of process %d has been swapped out!\n", entry->idx, entry->pid);
     return cur_frame;
 }
-void VMAlgorithms::showProcessStatus(int pid) {
+
+void FIFO::deleteProcess(int pid) {
     if (processes.find(pid) == processes.end()) {
-        printf("Process %d does not exist.\n", pid);
+        printf("Process %d does not exist\n", pid);
         return;
     }
-    printf("\n============== Status Of Process(%d) ==============\n", pid);
 
-
-    for (auto &page : processes[pid]) {
-        printf("Page %d: ", page->idx + 1);
-        if (page->valid) {
-            printf("In Memory, Frame = %d\n", page->frame);
+    queue<PageEntry*> newQueue;
+    while (!q.empty()) {
+        PageEntry* entry = q.front();
+        q.pop();
+        if (entry->pid != pid) {
+            newQueue.push(entry);
         } else {
-            printf("Not In Memory\n");
+            if (entry->valid) fullFrames--;
         }
     }
+    q = newQueue;
 
-    printf("===================================================\n");
+    auto& pages = processes[pid];
+    for (auto page : pages) delete page;
+    processes.erase(pid);
+
+    printf("Process %d deleted\n", pid);
 }
 
 // LRU Algorithm
@@ -140,6 +166,29 @@ int LRU::chooseVictim() {
     printf("Page number %d of process %d has been swapped out!\n", entry->idx + 1, entry->pid);
     return cur_frame;
 }
+
+void LRU::deleteProcess(int pid) {
+    if (processes.find(pid) == processes.end()) {
+        printf("Process %d does not exist\n", pid);
+        return;
+    }
+
+    auto it = lruList.begin();
+    while (it != lruList.end()) {
+        if ((*it)->pid == pid) {
+            if ((*it)->valid) fullFrames--;
+            it = lruList.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
+    auto& pages = processes[pid];
+    for (auto page : pages) delete page;
+    processes.erase(pid);
+
+    printf("Process %d deleted\n", pid);
+}
 // MRU Algorithm
 MRU::MRU() : VMAlgorithms() {}
 
@@ -197,6 +246,29 @@ int MRU::chooseVictim() {
     victim->frame = -1;
     printf("Page number %d of process %d has been swapped out!\n", victim->idx + 1, victim->pid);
     return frame;
+}
+
+void MRU::deleteProcess(int pid) {
+    if (processes.find(pid) == processes.end()) {
+        printf("Process %d does not exist\n", pid);
+        return;
+    }
+
+    auto it = mruList.begin();
+    while (it != mruList.end()) {
+        if ((*it)->pid == pid) {
+            if ((*it)->valid) fullFrames--;
+            it = mruList.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
+    auto& pages = processes[pid];
+    for (auto page : pages) delete page;
+    processes.erase(pid);
+
+    printf("Process %d deleted\n", pid);
 }
 
 // LFU Implementation
@@ -282,6 +354,22 @@ int LFU::chooseVictim() {
     return -1;
 }
 
+void LFU::deleteProcess(int pid) {
+    if (processes.find(pid) == processes.end()) {
+        printf("Process %d does not exist\n", pid);
+        return;
+    }
+
+    auto& pages = processes[pid];
+    for (auto page : pages) {
+        if (page->valid) fullFrames--;
+        delete page;
+    }
+    processes.erase(pid);
+
+    printf("Process %d deleted\n", pid);
+}
+
 // CLOCK Implementation
 CLOCK::CLOCK() : clockHand(0) {}
 
@@ -356,4 +444,30 @@ int CLOCK::chooseVictim() {
     clockList.erase(clockList.begin() + clockHand);
     printf("Page number %d of process %d has been swapped out!\n", victim->idx + 1, victim->pid);
     return frame;
+}
+
+
+void CLOCK::deleteProcess(int pid) {
+    if (processes.find(pid) == processes.end()) {
+        printf("Process %d does not exist\n", pid);
+        return;
+    }
+
+    auto it = clockList.begin();
+    while (it != clockList.end()) {
+        if ((*it)->pid == pid) {
+            if ((*it)->valid) fullFrames--;
+            it = clockList.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
+    if (clockHand >= clockList.size()) clockHand = 0;
+
+    auto& pages = processes[pid];
+    for (auto page : pages) delete page;
+    processes.erase(pid);
+
+    printf("Process %d deleted\n", pid);
 }

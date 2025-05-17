@@ -1,11 +1,10 @@
-#include <QDebug>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QVBoxLayout>
-#include <QMouseEvent>
-#include <QObject>
+#include <QtGui/QMouseEvent>
+#include <QtCore/QObject>
 #include <QtWidgets/QGridLayout>
 #include <iostream>
 #include <string>
@@ -41,6 +40,9 @@ int main(int argc, char **argv) {
         return 1;
     }
 
+    srand(time(0));
+    n = rand() % 8 + 1;
+    m = rand() % 8 + 1;
     string msg_to_os = "New Process: " + to_string(pid) + " With " + to_string(n * m) + " Pages\n";
     writeToOs(ptr, msg_to_os);
 
@@ -52,9 +54,10 @@ int main(int argc, char **argv) {
 
     auto *grid = new QGridLayout();
     auto addButtons = [&]()-> void {
+        int cnt = 1;
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j < m; ++j) {
-                QString buttonName = QString("Button %1").arg(i * n + j + 1);
+                QString buttonName = QString("Button %1").arg(cnt++);
                 QPushButton *button = new QPushButton(buttonName);
 
                 grid->addWidget(button, i, j);
@@ -95,6 +98,13 @@ int main(int argc, char **argv) {
 
     window.setLayout(outerLayout);
     window.show();
+
+    // Handle Closing
+    QObject::connect(&app, &QApplication::aboutToQuit, [ptr, pid]() {
+        qDebug() << "Application is closing! Performing cleanup...";
+        string delMsg = "Close " + to_string(pid);
+        writeToOs(ptr, delMsg);
+    });
 
     return app.exec();
 }

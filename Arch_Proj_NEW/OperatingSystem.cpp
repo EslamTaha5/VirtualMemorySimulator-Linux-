@@ -37,6 +37,9 @@ int main(int argc, char *argv[]) {
 
     void *ptr = mmap(0, BUFFERSIZE, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
     void *ptr2 = mmap(0, BUFFERSIZE, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd2, 0);
+    int messageLength = 0;
+
+    memset(ptr2, 0, sizeof(messageLength) + messageLength);
 
     if (ptr == MAP_FAILED) {
         perror("mmap1");
@@ -60,7 +63,6 @@ int main(int argc, char *argv[]) {
 
     writeToMemory(algorithm);
     while (true) {
-        int messageLength = 0;
         memcpy(&messageLength, ptr2, sizeof(messageLength));
 
         if (messageLength > 0 && messageLength < BUFFERSIZE - sizeof(messageLength)) {
@@ -73,7 +75,7 @@ int main(int argc, char *argv[]) {
             string msg(message);
 
             cout << msg  << endl;
-            
+
             istringstream msgStream(msg);
             string operation;
             msgStream >> operation;
@@ -89,13 +91,18 @@ int main(int argc, char *argv[]) {
                 msgStream >> pid >> pid >> page >> page >> page;
                 string access_message = "R/W " +pid + " " + page;
                 writeToMemory(access_message);
-            }else{
+            }else if(operation == "Show"){
                 string pid;
                 for(int i = 0; i < 6; i++){
                     msgStream >> pid;
                 }
 
                 writeToMemory("S " + pid);
+            }else{
+                string pid;
+                msgStream >> pid;
+                string delProcess = "D " + pid;
+                writeToMemory(msg);
             }
             memset(ptr2, 0, sizeof(messageLength) + messageLength);
         }
