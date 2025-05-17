@@ -1,0 +1,3 @@
+/home/eslamt/CLionProjects/Arch_Proj_NEW/cmake-build-debug/CMakeFiles/Arch_Proj_NEW.dir
+/home/eslamt/CLionProjects/Arch_Proj_NEW/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/eslamt/CLionProjects/Arch_Proj_NEW/cmake-build-debug/CMakeFiles/rebuild_cache.dir

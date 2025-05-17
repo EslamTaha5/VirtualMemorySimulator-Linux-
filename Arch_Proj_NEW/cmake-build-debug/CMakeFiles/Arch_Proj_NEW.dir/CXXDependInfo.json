@@ -1,0 +1,42 @@
+{
+	"bmi-installation" : null,
+	"compiler-frontend-variant" : "GNU",
+	"compiler-id" : "GNU",
+	"compiler-simulate-id" : "",
+	"config" : "Debug",
+	"cxx-modules" : {},
+	"database-info" : null,
+	"dir-cur-bld" : "/home/eslamt/CLionProjects/Arch_Proj_NEW/cmake-build-debug",
+	"dir-cur-src" : "/home/eslamt/CLionProjects/Arch_Proj_NEW",
+	"dir-top-bld" : "/home/eslamt/CLionProjects/Arch_Proj_NEW/cmake-build-debug",
+	"dir-top-src" : "/home/eslamt/CLionProjects/Arch_Proj_NEW",
+	"exports" : [],
+	"forward-modules-from-target-dirs" : [],
+	"include-dirs" : [],
+	"language" : "CXX",
+	"linked-target-dirs" : [],
+	"module-dir" : "/home/eslamt/CLionProjects/Arch_Proj_NEW/cmake-build-debug/CMakeFiles/Arch_Proj_NEW.dir",
+	"sources" : 
+	{
+		"CMakeFiles/Arch_Proj_NEW.dir/MMU.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/eslamt/CLionProjects/Arch_Proj_NEW/MMU.cpp"
+		},
+		"CMakeFiles/Arch_Proj_NEW.dir/OperatingSystem.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/eslamt/CLionProjects/Arch_Proj_NEW/OperatingSystem.cpp"
+		},
+		"CMakeFiles/Arch_Proj_NEW.dir/VMAlgorithms.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/eslamt/CLionProjects/Arch_Proj_NEW/VMAlgorithms.cpp"
+		},
+		"CMakeFiles/Arch_Proj_NEW.dir/main.cpp.o" : 
+		{
+			"language" : "CXX",
+			"source" : "/home/eslamt/CLionProjects/Arch_Proj_NEW/main.cpp"
+		}
+	}
+}

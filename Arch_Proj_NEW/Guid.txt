@@ -1,0 +1,18 @@
+Start two terminals and run this command in the first one
+
+g++ OperatingSystems.cpp -o os
+./os <Require_Algorithm> 
+like this
+./os FIFO
+
+on the second terminal run these commands
+
+1.
+g++ MMU.cpp VMAlgorithms.cpp -o mmu -lrt
+2.
+./mmu
+
+and then you can insert processes and acess pages in os terminal and read
+memory state on mmu terminal
+
+
