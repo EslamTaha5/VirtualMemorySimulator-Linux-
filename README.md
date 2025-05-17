@@ -36,11 +36,11 @@ g++ -o my_app main.cpp -I/usr/include/qt6 -lQt6Widgets -lQt6Gui -lQt6Core -fPIC
 ```bash
 ./os
 ```
-### Terminal 1: Run MMU
+### Terminal 2: Run MMU
 ```bash
 ./mmu
 ```
-### Terminal 1: Run Application
+### Terminal 3: Run Application
 ```bash
 ./my_app &
 ```
